@@ -1,21 +1,19 @@
-import { useEffect, useState } from 'react'
-import './Shop.scss'
-import { ShopItem } from './ShopItem/ShopItem'
-import { getShop } from '../../http/Shop'
-import { useTelegram } from '../Hooks/useTelegram'
-import { getUserInfo } from '../../http/User'
-import Modal from '../Modal/Modal'
+import { useEffect, useState } from 'react';
+import './Shop.scss';
+import { ShopItem } from './ShopItem/ShopItem';
+import { getShop } from '../../http/Shop';
+import { useTelegram } from '../Hooks/useTelegram';
+import { getUserInfo } from '../../http/User';
+import Modal from '../Modal/Modal';
 
 export let Shop = ({ props }) => {
+  const { telegram_id } = useTelegram();
 
-  const { telegram_id, } = useTelegram();
-
-  let [shop, setShop] = useState([])
-  let [user, setUser] = useState({})
-  let [titleModal, setTitleModal] = useState('')
-  let [textModal, setTextModal] = useState('')
-  let [emojiModal, setEmojiModal] = useState('')
-
+  let [shop, setShop] = useState([]);
+  let [user, setUser] = useState({});
+  let [titleModal, setTitleModal] = useState('');
+  let [textModal, setTextModal] = useState('');
+  let [emojiModal, setEmojiModal] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -27,34 +25,34 @@ export let Shop = ({ props }) => {
   };
 
   useEffect(() => {
-    getShop(setShop)
-    getUserInfo(telegram_id, setUser)
-  }, [telegram_id])
+    getShop(setShop);
+    getUserInfo(telegram_id, setUser);
+  }, [telegram_id]);
 
   let updateShop = () => {
-    getShop(setShop)
-    getUserInfo(telegram_id, setUser)
-  }
+    getShop(setShop);
+    getUserInfo(telegram_id, setUser);
+  };
+
+  // Сортировка по стоимости
+  const sortedShop = [...shop].sort((a, b) => a.price - b.price);
 
   return (
     <div className='shop'>
-      {shop?.map(item =>
-        <ShopItem shop={item}
+      {sortedShop?.map((item) => (
+        <ShopItem
+          key={item.id}
+          shop={item}
           user={user}
           openModal={openModal}
-          closeModal={closeModal} 
+          closeModal={closeModal}
           setTitleModal={setTitleModal}
           setTextModal={setTextModal}
           setEmojiModal={setEmojiModal}
           updateShop={updateShop}
-          />)}
-      <Modal
-        isOpen={isOpen}
-        onClose={closeModal}
-        title={titleModal}
-        text={textModal}
-        emoji={emojiModal}
-      />
+        />
+      ))}
+      <Modal isOpen={isOpen} onClose={closeModal} title={titleModal} text={textModal} emoji={emojiModal} />
     </div>
-  )
-}
+  );
+};
