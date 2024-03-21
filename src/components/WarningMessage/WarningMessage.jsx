@@ -13,9 +13,9 @@ export const WarningMessage = () => {
       <p className="bot-link">
         <strong>Ссылка на бота:</strong> <a href="https://t.me/moodClickerBot">https://t.me/moodClickerBot</a>
       </p>
-      <div className="qr-code">
+      {/* <div className="qr-code">
         <img src="http://qrcoder.ru/code/?https%3A%2F%2Ft.me%2FmoodClickerBot&4&0"></img>
-      </div>
+      </div> */}
     </div>
   );
 };
