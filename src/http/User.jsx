@@ -67,15 +67,17 @@ export const getUserInfo = async (telegram_id, setter) => {
 };
 
 
-export const putIncrementClick = async (telegram_id, setCurentNumberOfClicks) => {
-  let response = await fetch(`${API_URL}users/increment_clicks/${telegram_id}`, {
+export const putIncrementClick = async (telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost) => {
+  let response = await fetch(`${API_URL}users/increment_clicks/${telegram_id}/${continuousClicksForPost}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
   });
 
   let data = await response.json()
+  console.log(data);
   setCurentNumberOfClicks(data);
-
+  setContinuousClicksForPost(0)
+  console.log('Отправили!');
 }
 
 

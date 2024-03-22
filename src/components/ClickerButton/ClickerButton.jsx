@@ -3,6 +3,7 @@ import './ClickerButton.scss';
 import { main_context } from '../Hooks/useStats_main';
 import { useTelegram } from '../Hooks/useTelegram';
 import { getUserInfo, putIncrementClick } from '../../http/User';
+import CryptoJS from 'crypto-js';
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -25,7 +26,7 @@ export const ClickerButton = (props) => {
 
   const { telegram_id } = useTelegram()
 
-  let {setCurrentBg, bgList, setCurentNumberOfClicks } = useContext(main_context);
+  let { setCurrentBg, bgList, setCurentNumberOfClicks, continuousClicksForPost, setContinuousClicksForPost } = useContext(main_context);
 
   const [clicks, setClicks] = useState([]);
   const [emojiIndex, setEmojiIndex] = useState(0); // Индекс текущего эмодзи
@@ -59,15 +60,18 @@ export const ClickerButton = (props) => {
     };
     setClicks((state) => [...state, newClick]);
     setContinuousClicks(prevClicks => prevClicks + 1);
-    putIncrementClick(telegram_id, setCurentNumberOfClicks);
+    setContinuousClicksForPost(prevClicks => prevClicks + 1);
     setTimeout(() => {
       setClicks(prevClicks => prevClicks.filter((click) => click.id !== newClick.id));
     }, 1000);
   };
 
+  //Если последовательность кликов закончена, меняем emoji назад
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setContinuousClicks(prevClicks => Math.max(0, prevClicks - clicksLimit));
+      
+      // setContinuousClicksForPost(0);
       if (emojiIndex !== 0) {
         setEmojiIndex(prevIndex => (prevIndex - 1) % emojis.length);
         setCurrentBg(prevIndex => (prevIndex - 1) % emojis.length);
@@ -78,6 +82,25 @@ export const ClickerButton = (props) => {
       clearTimeout(timeoutId);
     };
   }, [continuousClicks, emojiIndex]);
+
+  const encryptNumber = (number, key) => {
+    const encryptedNumber = xorEncrypt(parseInt(number), parseInt(key));
+    return encryptedNumber;
+  };
+
+  const xorEncrypt = (number, key) => {
+    return number ^ key;
+  };
+
+  //Каждую секунду после остановки серии кликов отправляем запрос
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (continuousClicksForPost !== 0){
+        putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, encryptNumber(continuousClicksForPost, Math.floor(Date.now() / 1000)));
+      }
+    }, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [continuousClicksForPost]);
 
 
   //Возвращаем челика в начальное положение
@@ -96,6 +119,7 @@ export const ClickerButton = (props) => {
     getUserInfo(telegram_id, setUserInfo)
   }, [])
 
+  //Меняем отрисованные числа в зависимости от бустов
   useEffect(() => {
     let user_boost = 0
     let user_xboost = 1
@@ -108,7 +132,7 @@ export const ClickerButton = (props) => {
     setCurrentBoost((1 + user_boost) * user_xboost)
   }, [userInfo])
 
-
+  //Улучшаем насроение emoji
   useEffect(() => {
     if (continuousClicks >= clicksLimit) {
       if (emojiIndex != emojis.length - 1) {
