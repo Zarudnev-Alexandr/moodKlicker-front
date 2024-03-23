@@ -32,7 +32,7 @@ export const ClickerButton = (props) => {
   const [emojiIndex, setEmojiIndex] = useState(0); // Индекс текущего эмодзи
   const [continuousClicks, setContinuousClicks] = useState(0); // Количество непрерывных кликов
   const emojis = ['😭', '😢', '😖', '😞', '😕', '🙁', '😐', '😏', '😉', '😌', '😎', '🥰', '🤩']; // Массив доступных эмодзи
-  const clicksLimit = 13; // Лимит кликов
+  const clicksLimit = 20; // Лимит кликов
   const timeoutDelay = 5000; // Задержка для таймаута (в миллисекундах)
   const [userInfo, setUserInfo] = useState({});
   const [currentBoost, setCurrentBoost] = useState(1)
