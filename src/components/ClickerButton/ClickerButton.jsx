@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import './ClickerButton.scss';
 import { main_context } from '../Hooks/useStats_main';
 import { useTelegram } from '../Hooks/useTelegram';
-import { getUserInfo, putIncrementClick } from '../../http/User';
+import { getUserInfo, putIncrementClick, putUserBan } from '../../http/User';
 import CryptoJS from 'crypto-js';
 
 function getRandomInt(max) {
@@ -83,7 +83,7 @@ export const ClickerButton = (props) => {
     } else {
       // Если превышен лимит кликов за период времени, выводим сообщение об ошибке или принимаем другие меры
       console.log("Превышен лимит кликов за период времени");
-      // Можно вывести сообщение об ошибке или принять другие меры
+      putUserBan(telegram_id)
     }
   };
 

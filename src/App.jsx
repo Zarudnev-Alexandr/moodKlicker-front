@@ -14,13 +14,13 @@ import { Shop } from './components/Shop/Shop';
 function App() {
 
 
-  const { tg, telegram_id, setIsUserLogin, isUserLogin } = useTelegram();
+  const { tg, telegram_id, setIsUserLogin, isUserLogin, isUserBanned, setIsUserBanned } = useTelegram();
   const { currentPage, setCurrentPage } = useInterface()
 
   useEffect(() => {
     tg.ready();
     telegram_id &&
-      loginUser(telegram_id, setIsUserLogin)
+      loginUser(telegram_id, setIsUserLogin, setIsUserBanned)
 
   }, [telegram_id])
 
@@ -29,29 +29,30 @@ function App() {
     <MainProvider>
       {isUserLogin ?
         <>
-          {currentPage === 'main' ? (
-            <div className="App">
-              <div className="container">
-                <div className="clicker__wrapper">
-                  <PaintClicks />
-                  <ClickerButton emoji='🤨'></ClickerButton>
-                  <div className="bottom">
-                    <Button className='bottom__btn' name='Магазин' page='shop' setCurrentPage={setCurrentPage} currentPage={currentPage} />
+          {isUserBanned ? <WarningMessage is_banned /> :
+            <>
+              {currentPage === 'main' ? (
+                <div className="App">
+                  <div className="container">
+                    <div className="clicker__wrapper">
+                      <PaintClicks />
+                      <ClickerButton emoji='🤨'></ClickerButton>
+                      <div className="bottom">
+                        <Button className='bottom__btn' name='Магазин' page='shop' setCurrentPage={setCurrentPage} currentPage={currentPage} />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ) : <></>}
-          {currentPage === 'shop' ? (
-            <>
-              <Shop />
-              {/* <div className="clicker__wrapper"> */}
-              <div className="bottom bottom__shop">
-                <Button className='bottom__btn' name='Продолжить кликать' page='main' setCurrentPage={setCurrentPage} currentPage={currentPage} />
-              </div>
-              {/* </div> */}
-            </>
-          ) : <></>}
+              ) : <></>}
+              {currentPage === 'shop' ? (
+                <>
+                  <Shop />
+                  <div className="bottom bottom__shop">
+                    <Button className='bottom__btn' name='Продолжить кликать' page='main' setCurrentPage={setCurrentPage} currentPage={currentPage} />
+                  </div>
+                </>
+              ) : <></>}
+            </>}
         </>
         : <WarningMessage />}
 

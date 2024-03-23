@@ -5,6 +5,7 @@ const tg = window.Telegram.WebApp;
 export function useTelegram() {
 
   let [isUserLogin, setIsUserLogin] = useState(false);
+  let [isUserBanned, setIsUserBanned] = useState(false);
   
 
   const onToggleButton = () => {
@@ -21,7 +22,9 @@ export function useTelegram() {
     telegram_id: tg.initDataUnsafe?.user?.id,
     // telegram_id: 1,
     onToggleButton,
+    isUserBanned,
     isUserLogin,
     setIsUserLogin,
+    setIsUserBanned,
   }
 }

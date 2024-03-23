@@ -26,15 +26,19 @@ export const getUser = async (telegram_id, setter) => {
 };
 
 
-export const loginUser = async (telegram_id, setter) => {
+export const loginUser = async (telegram_id, setter, setIsUserBanned) => {
   try {
     const response = await fetch(`${API_URL}users/login?telegram_id=${telegram_id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
     });
+    let data = await response.json();
 
     if (response.status === 200) {
       setter(true);
+      if (data.is_banned){
+        setIsUserBanned(true)
+      }
     } else if (response.status === 400) {
       setter(false);
     } else {
@@ -102,3 +106,13 @@ export const getCurrentNumberOfClicks = async (telegram_id, setter) => {
     setter(0);
   }
 };
+
+export const putUserBan = async (telegram_id) => {
+  let response = await fetch(`${API_URL}users/ban/${telegram_id}/`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  let data = await response.json()
+  if (data) { location.reload(); }
+}
