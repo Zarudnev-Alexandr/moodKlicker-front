@@ -37,33 +37,54 @@ export const ClickerButton = (props) => {
   const [userInfo, setUserInfo] = useState({});
   const [currentBoost, setCurrentBoost] = useState(1)
 
+  //от автокликера
+  const [clickTimestamps, setClickTimestamps] = useState([]);
+  const clickIntervalLimit = 30; // Лимит кликов за одну секунду
+  const clickIntervalWindow = 1000; // Окно времени, в котором учитываются клики (в миллисекундах)
+
   const handleClick = (event) => {
-    const button = event.currentTarget.querySelector('.ClickerButton-button');
-    let direction = getDirection();
-    let directionClass = direction < 0 ? 'click-left' : 'click-right';
+    const currentTime = Date.now();
 
-    setTimeout(() => {
-      const randomTransform = getRandomTransform();
-      button.style.transform = randomTransform;
-      void button.offsetWidth;
-    }, 100); // Выполняем через 0.1 секунды
+    // Определяем временное окно для учета кликов
+    const clickWindowStart = currentTime - clickIntervalWindow;
 
-    const boundingRect = event.currentTarget.getBoundingClientRect();
-    const newClick = {
-      id: getRandomInt(999999999),
-      x: event.clientX - boundingRect.left,
-      y: event.clientY - boundingRect.top,
-      opacity: 1,
-      clickColor: `rgb(${getRandomInt(255)}, ${getRandomInt(255)}, ${getRandomInt(255)})`,
-      direction: directionClass,
-      
-    };
-    setClicks((state) => [...state, newClick]);
-    setContinuousClicks(prevClicks => prevClicks + 1);
-    setContinuousClicksForPost(prevClicks => prevClicks + 1);
-    setTimeout(() => {
-      setClicks(prevClicks => prevClicks.filter((click) => click.id !== newClick.id));
-    }, 1000);
+    // Фильтруем клики, оставляя только те, которые попадают в текущее временное окно
+    const recentClicks = clickTimestamps.filter(timestamp => timestamp > clickWindowStart);
+
+    // Если количество кликов в текущем окне времени меньше лимита, разрешаем выполнение дополнительных действий
+    if (recentClicks.length < clickIntervalLimit) {
+      const button = event.currentTarget.querySelector('.ClickerButton-button');
+      let direction = getDirection();
+      let directionClass = direction < 0 ? 'click-left' : 'click-right';
+
+      setTimeout(() => {
+        const randomTransform = getRandomTransform();
+        button.style.transform = randomTransform;
+        void button.offsetWidth;
+      }, 100); // Выполняем через 0.1 секунды
+
+      const boundingRect = event.currentTarget.getBoundingClientRect();
+      const newClick = {
+        id: getRandomInt(999999999),
+        x: event.clientX - boundingRect.left,
+        y: event.clientY - boundingRect.top,
+        opacity: 1,
+        clickColor: `rgb(${getRandomInt(255)}, ${getRandomInt(255)}, ${getRandomInt(255)})`,
+        direction: directionClass,
+      };
+      setClicks((state) => [...state, newClick]);
+      setContinuousClicks(prevClicks => prevClicks + 1);
+      setContinuousClicksForPost(prevClicks => prevClicks + 1);
+      setClickTimestamps([...recentClicks, currentTime]);
+
+      setTimeout(() => {
+        setClicks(prevClicks => prevClicks.filter((click) => click.id !== newClick.id));
+      }, 1000);
+    } else {
+      // Если превышен лимит кликов за период времени, выводим сообщение об ошибке или принимаем другие меры
+      console.log("Превышен лимит кликов за период времени");
+      // Можно вывести сообщение об ошибке или принять другие меры
+    }
   };
 
   //Если последовательность кликов закончена, меняем emoji назад
