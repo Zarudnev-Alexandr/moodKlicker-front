@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/moodKlicker-front/static/css/main.1b28bfac.css",
-    "main.js": "/moodKlicker-front/static/js/main.a8e230c9.js",
+    "main.js": "/moodKlicker-front/static/js/main.afc63a43.js",
     "index.html": "/moodKlicker-front/index.html",
     "main.1b28bfac.css.map": "/moodKlicker-front/static/css/main.1b28bfac.css.map",
-    "main.a8e230c9.js.map": "/moodKlicker-front/static/js/main.a8e230c9.js.map"
+    "main.afc63a43.js.map": "/moodKlicker-front/static/js/main.afc63a43.js.map"
   },
   "entrypoints": [
     "static/css/main.1b28bfac.css",
-    "static/js/main.a8e230c9.js"
+    "static/js/main.afc63a43.js"
   ]
 }
