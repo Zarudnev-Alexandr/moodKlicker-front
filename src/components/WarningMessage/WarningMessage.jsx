@@ -8,7 +8,7 @@ export const WarningMessage = ({is_banned}) => {
         <div className="telegram-logo">
           <img src="https://i.ytimg.com/vi/Y8wNqhjGJsw/mqdefault.jpg"></img>
         </div>
-        <p className="warning-text">
+        <p className="warning-text" style={{fontSize: '20px'}}>
           Если ты жесткий драг кликер, то сорян за бан, но алгоритмы так посидели, покумекали и пришли к выводу, что ты слишком уж быстро кликаешь, подозрительно это, сам понимаешь. Сорян, тут уж ничего не сделаешь, разве что обратиться к админу.
         </p>
         <p className="bot-link">
