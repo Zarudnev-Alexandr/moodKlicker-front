@@ -39,7 +39,7 @@ export const ClickerButton = (props) => {
 
   //от автокликера
   const [clickTimestamps, setClickTimestamps] = useState([]);
-  const clickIntervalLimit = 12; // Лимит кликов за одну секунду
+  const clickIntervalLimit = 20; // Лимит кликов за одну секунду
   const clickIntervalWindow = 1000; // Окно времени, в котором учитываются клики (в миллисекундах)
 
   const handleClick = (event) => {
