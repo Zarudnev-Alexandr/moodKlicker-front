@@ -104,31 +104,18 @@ export const ClickerButton = (props) => {
     };
   }, [continuousClicks, emojiIndex]);
 
-  const encryptNumber = (number, key) => {
-    const encryptedNumber = xorEncrypt(parseInt(number), parseInt(key));
-    return encryptedNumber;
-  };
-
-  const xorEncrypt = (number, key) => {
-    return number ^ key;
-  };
-
   //Каждую секунду после остановки серии кликов отправляем запрос
   useEffect(() => {
-    let timeoutId = setTimeout(() => {
-      if (continuousClicksForPost !== 0) {
+    const timeoutId = setTimeout(() => {
+      if (continuousClicksForPost !== 0){
         putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost);
       }
     }, 1000);
-
-    if (continuousClicksForPost >= 120) {
+    if (continuousClicksForPost >= 120){
       putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost);
     }
-
-    return () => {
-      clearTimeout(timeoutId); // Очищаем таймаут при размонтировании компонента
-    };
-  }, [continuousClicksForPost, telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost]);
+    return () => clearTimeout(timeoutId);
+  }, [continuousClicksForPost]);
 
 
   //Возвращаем челика в начальное положение
