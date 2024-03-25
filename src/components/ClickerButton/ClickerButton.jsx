@@ -115,38 +115,20 @@ export const ClickerButton = (props) => {
 
   //Каждую секунду после остановки серии кликов отправляем запрос
   useEffect(() => {
-    let requestSent = false; // Флаг, указывающий, был ли отправлен запрос
-
-    const timeoutId = setTimeout(() => {
-      if (continuousClicksForPost !== 0 && !requestSent) {
-        putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost)
-          .then(() => {
-            setContinuousClicksForPost(0); // Сбрасываем значение continuousClicksForPost после успешной отправки запроса
-            requestSent = false; // Устанавливаем флаг обратно в false
-          })
-          .catch((error) => {
-            console.error('Произошла ошибка при отправке запроса:', error);
-            requestSent = false; // Устанавливаем флаг обратно в false
-          });
-
-        requestSent = true; // Устанавливаем флаг в true, чтобы указать, что запрос был отправлен
+    let timeoutId = setTimeout(() => {
+      if (continuousClicksForPost !== 0) {
+        putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost);
       }
     }, 1000);
 
-    if (continuousClicksForPost >= 120 && !requestSent) {
-      putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost)
-        .then(() => {
-          setContinuousClicksForPost(0); // Сбрасываем значение continuousClicksForPost после успешной отправки запроса
-          requestSent = false; // Устанавливаем флаг обратно в false
-        })
-        .catch((error) => {
-          console.error('Произошла ошибка при отправке запроса:', error);
-          requestSent = false; // Устанавливаем флаг обратно в false
-        });
+    if (continuousClicksForPost >= 120) {
+      putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost);
     }
 
-    return () => clearTimeout(timeoutId);
-  }, [continuousClicksForPost]);
+    return () => {
+      clearTimeout(timeoutId); // Очищаем таймаут при размонтировании компонента
+    };
+  }, [continuousClicksForPost, telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost]);
 
 
   //Возвращаем челика в начальное положение
