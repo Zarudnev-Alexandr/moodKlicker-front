@@ -108,13 +108,17 @@ export const ClickerButton = (props) => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (continuousClicksForPost !== 0){
-        putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost);
+        putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost).then(() => {
+          setContinuousClicksForPost(() => 0)
+        })
       }
     }, 1000);
     if (continuousClicksForPost >= 120){
-      putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost).then(() => {
-        setContinuousClicksForPost(() => 0)
-      });
+      let newClicksForPost = continuousClicksForPost
+      setContinuousClicksForPost(prevClicks => prevClicks - 120).then(
+        putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, newClicksForPost)
+      )
+      
     }
     return () => clearTimeout(timeoutId);
   }, [continuousClicksForPost]);
