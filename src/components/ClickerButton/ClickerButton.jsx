@@ -116,7 +116,7 @@ export const ClickerButton = (props) => {
       putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost);
       setTimeout(() => { // Добавляем задержку перед сбросом состояния
         setContinuousClicksForPost(0);
-      }, 100); // Измените значение задержки, если это необходимо
+      }, 400); // Измените значение задержки, если это необходимо
     }
 
     return () => clearTimeout(timeoutId);
