@@ -115,14 +115,36 @@ export const ClickerButton = (props) => {
 
   //Каждую секунду после остановки серии кликов отправляем запрос
   useEffect(() => {
+    let requestSent = false; // Флаг, указывающий, был ли отправлен запрос
+
     const timeoutId = setTimeout(() => {
-      if (continuousClicksForPost !== 0){
-        putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost);
+      if (continuousClicksForPost !== 0 && !requestSent) {
+        putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost)
+          .then(() => {
+            setContinuousClicksForPost(0); // Сбрасываем значение continuousClicksForPost после успешной отправки запроса
+            requestSent = false; // Устанавливаем флаг обратно в false
+          })
+          .catch((error) => {
+            console.error('Произошла ошибка при отправке запроса:', error);
+            requestSent = false; // Устанавливаем флаг обратно в false
+          });
+
+        requestSent = true; // Устанавливаем флаг в true, чтобы указать, что запрос был отправлен
       }
     }, 1000);
-    if (continuousClicksForPost >= 120){
-      putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost);
+
+    if (continuousClicksForPost >= 120 && !requestSent) {
+      putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost)
+        .then(() => {
+          setContinuousClicksForPost(0); // Сбрасываем значение continuousClicksForPost после успешной отправки запроса
+          requestSent = false; // Устанавливаем флаг обратно в false
+        })
+        .catch((error) => {
+          console.error('Произошла ошибка при отправке запроса:', error);
+          requestSent = false; // Устанавливаем флаг обратно в false
+        });
     }
+
     return () => clearTimeout(timeoutId);
   }, [continuousClicksForPost]);
 
