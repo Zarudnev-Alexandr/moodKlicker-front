@@ -115,9 +115,8 @@ export const ClickerButton = (props) => {
     }, 1000);
     if (continuousClicksForPost >= 120){
       let newClicksForPost = continuousClicksForPost
-      setContinuousClicksForPost(prevClicks => prevClicks - 120).then(
-        putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, newClicksForPost)
-      )
+      setContinuousClicksForPost(() => 0);
+      putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, newClicksForPost);
       
     }
     return () => clearTimeout(timeoutId);
