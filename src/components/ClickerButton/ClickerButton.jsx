@@ -107,18 +107,15 @@ export const ClickerButton = (props) => {
   //Каждую секунду после остановки серии кликов отправляем запрос
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (continuousClicksForPost !== 0) {
+      if (continuousClicksForPost !== 0){
         putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost);
       }
     }, 1000);
-
-    if (continuousClicksForPost >= 120) {
-      putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost);
-      setTimeout(() => { // Добавляем задержку перед сбросом состояния
-        setContinuousClicksForPost(0);
-      }, 50); 
+    if (continuousClicksForPost >= 120){
+      putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, continuousClicksForPost).then(() => {
+        setContinuousClicksForPost(() => 0)
+      });
     }
-
     return () => clearTimeout(timeoutId);
   }, [continuousClicksForPost]);
 

@@ -80,7 +80,7 @@ export const putIncrementClick = async (telegram_id, setCurentNumberOfClicks, se
   let data = await response.json()
   console.log(data);
   setCurentNumberOfClicks(data);
-  setContinuousClicksForPost(() => 0)
+  // setContinuousClicksForPost(() => 0)
   console.log('Отправили!');
 }
 
