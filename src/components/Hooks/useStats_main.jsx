@@ -24,6 +24,10 @@ export const MainProvider = ({ children }) => {
     'radial-gradient(circle, rgba(255, 229, 204, 1) 0%, rgba(255, 255, 153, 1) 50%, rgba(204, 229, 255, 1) 100%)', // 😎
     'radial-gradient(circle, rgba(255, 204, 255, 1) 0%, rgba(204, 255, 255, 1) 50%, rgba(255, 255, 153, 1) 100%)', // 🥰
     'radial-gradient(circle, rgba(204, 204, 255, 1) 0%, rgba(255, 204, 255, 1) 50%, rgba(255, 255, 153, 1) 100%)', // 🤩
+    'radial-gradient(circle, rgba(255, 221, 153, 1) 0%, rgba(255, 204, 153, 1) 50%, rgba(255, 153, 153, 1) 100%)', // 🤡
+    'radial-gradient(circle, rgba(102, 51, 0, 1) 0%, rgba(153, 102, 51, 1) 50%, rgba(204, 153, 102, 1) 100%)', // 💩
+    'radial-gradient(circle, rgba(255, 255, 204, 1) 0%, rgba(255, 255, 153, 1) 50%, rgba(255, 204, 153, 1) 100%)', // 🥚
+    'radial-gradient(circle, rgba(255, 0, 0, 1) 0%, rgba(255, 153, 51, 1) 50%, rgba(255, 255, 102, 1) 100%)', // 💥
   ]);
   const [currentBg, setCurrentBg] = useState(0);
   const [curentNumberOfClicks, setCurentNumberOfClicks] = useState(0);
