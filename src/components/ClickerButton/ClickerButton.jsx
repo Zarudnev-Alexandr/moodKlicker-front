@@ -113,12 +113,12 @@ export const ClickerButton = (props) => {
         })
       }
     }, 1000);
-    if (continuousClicksForPost === 200){
-      let newClicksForPost = continuousClicksForPost
-      setContinuousClicksForPost(() => 0);
-      putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, newClicksForPost);
+    // if (continuousClicksForPost === 200){
+    //   let newClicksForPost = continuousClicksForPost
+    //   setContinuousClicksForPost(() => 0);
+    //   putIncrementClick(telegram_id, setCurentNumberOfClicks, setContinuousClicksForPost, newClicksForPost);
       
-    }
+    // }
     return () => clearTimeout(timeoutId);
   }, [continuousClicksForPost]);
 
